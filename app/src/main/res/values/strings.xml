@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MLChallenge</string>
+    <string name="search_query_text">Que estas buscando?</string>
+    <string name="no_previous_searchs">Que estas buscando?</string>
+    <string name="confirm_exit">Estas seguro que queres salir?</string>
+    <string name="accept">Salir</string>
+    <string name="cancel">Cancelar</string>
+    <string name="errorToast">No fue posible completar la operacion!</string>
+    <string name="welcome_text">Bienvenido! Que estas buscando? Presiona en la lupa y encontralo!</string>
+    <string name="last_search">ULTIMOS ELEMENTOS BUSCADOS:</string>
+    <string name="product_code">CODIGO DE PRODUCTO: </string>
+    <string name="currency">$</string>
+</resources>

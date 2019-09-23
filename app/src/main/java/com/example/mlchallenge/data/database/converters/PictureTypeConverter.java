@@ -9,6 +9,8 @@ import java.util.List;
 
 import androidx.room.TypeConverter;
 
+// Clase utilizada para pasar el objeto Picture a la DB de Room
+
 public class PictureTypeConverter {
 
     @TypeConverter

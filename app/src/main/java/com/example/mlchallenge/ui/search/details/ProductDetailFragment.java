@@ -90,15 +90,30 @@ public class ProductDetailFragment extends Fragment {
         });
     }
 
-    public void setDetailFragmentData(Product product, Boolean isError) {
+    // Metodo para agregar en la vista la informacion del producto
 
+    public void setDetailFragmentData(Product product, Boolean isError) {
         if (isError) {
             errorThumbnail.setVisibility(View.VISIBLE);
         }
         if (product != null) {
-            productId.setText(getContext().getResources().getString(R.string.product_code) + product.getId());
-            productTitle.setText(product.getTitle());
-            productPrice.setText(getContext().getResources().getString(R.string.currency) + product.getPrice().toString());
+            if (product.getId() != null) {
+                productId.setText(getContext().getResources().getString(R.string.product_code) + product.getId());
+            } else {
+                productId.setText(getContext().getResources().getString(R.string.default_value));
+            }
+
+            if (product.getTitle() != null) {
+                productTitle.setText(product.getTitle());
+            } else {
+                productTitle.setText(getContext().getResources().getString(R.string.default_value));
+            }
+
+            if (product.getPrice() != null) {
+                productPrice.setText(getContext().getResources().getString(R.string.currency) + product.getPrice().toString());
+            } else {
+                productPrice.setText(getContext().getResources().getString(R.string.default_value));
+            }
         }
     }
 
@@ -116,6 +131,9 @@ public class ProductDetailFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
     }
 
+
+    // View Pager para ver las fotos en el detalle
+
     private void setImageViewPager(List<Picture> pictures) {
         adapterViewPager = new VPAdapter(getContext(), pictures);
         vpPictures.setAdapter(adapterViewPager);
@@ -124,7 +142,14 @@ public class ProductDetailFragment extends Fragment {
         vpPictures.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == 0) {
+
+                // Manejar las flechas de las fotos programaticamente
+
+                if (pictureList.size() == 1) {
+                    leftArrow.setVisibility(View.GONE);
+                    rightArrow.setVisibility(View.GONE);
+                }
+                else if (position == 0 && pictureList.size() != 1) {
                     leftArrow.setVisibility(View.GONE);
                     rightArrow.setVisibility(View.VISIBLE);
                 } else if (position == pictureList.size() - 1) {

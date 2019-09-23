@@ -73,10 +73,24 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
         public void bindTo(Product product) {
+
             Glide.with(thumbnail.getContext()).load(product.getThumbnail()).error(R.drawable.ic_image).into(thumbnail);
-            productId.setText(context.getResources().getString(R.string.product_code) + product.getId());
-            productTitle.setText(product.getTitle());
-            productPrice.setText(context.getResources().getString(R.string.currency) + product.getPrice().toString());
+
+            if (product.getId() != null) {
+                productId.setText(context.getResources().getString(R.string.product_code) + product.getId());
+            } else {
+                productId.setText(context.getResources().getString(R.string.default_value));
+            }
+            if (product.getTitle() != null) {
+                productTitle.setText(product.getTitle());
+            } else {
+                productTitle.setText(context.getResources().getString(R.string.default_value));
+            }
+            if (product.getPrice() != null) {
+                productPrice.setText(context.getResources().getString(R.string.currency) + product.getPrice().toString());
+            } else {
+                productPrice.setText(context.getResources().getString(R.string.default_value));
+            }
         }
     }
 

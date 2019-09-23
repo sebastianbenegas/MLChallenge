@@ -78,6 +78,17 @@ public class SearchFragment extends Fragment {
         searchMenu = null;
     }
 
+    // Seteo del toolbar con el buscador
+
+    private void setupToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -103,6 +114,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    // Observer del viewModel
     private void setupSearchObservers() {
 
         searchViewModel.searchResult.observe(this, resource -> {
@@ -127,25 +139,11 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    // Metodo para buscar mas resultado de una busqueda ya realizada
+
     public void searchMoreProducts() {
         offset += 10;
         searchViewModel.searchProducts(searchView.getQuery().toString(), offset, limit);
-    }
-
-    private void getProductListFragment() {
-        if (productListFragment == null) {
-            productListFragment = new ProductListFragment();
-        }
-        fragmentChange(productListFragment, TAG_PRODUCT_LIST);
-    }
-
-    private void setupToolbar() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        activity.getSupportActionBar().invalidateOptionsMenu();
-        setHasOptionsMenu(true);
     }
 
     private void handleErrorResponse() {
@@ -161,24 +159,38 @@ public class SearchFragment extends Fragment {
         productListFragment.showProgressBar();
     }
 
+    //Metodo para cambiar fragments
 
-    public void fragmentChange(Fragment mFragment, String tag) {
+    private void fragmentChange(Fragment mFragment, String tag) {
         FragmentManager childFragmentManager = getChildFragmentManager();
         FragmentTransaction childFragTrans = childFragmentManager.beginTransaction();
-        childFragTrans.add(R.id.fragment_container_search, mFragment, tag);
+        if (tag.equals(TAG_PRODUCT_DETAIL)) {
+            childFragTrans.setCustomAnimations(R.anim.bottom_to_top, R.anim.top_to_bottom);
+        }
+        childFragTrans.replace(R.id.fragment_container_search, mFragment, tag);
         childFragTrans.addToBackStack(tag);
         childFragTrans.commit();
     }
 
+    // Metodo para agregar el fragment que contiene la lista
+
+    private void getProductListFragment() {
+        if (productListFragment == null) {
+            productListFragment = new ProductListFragment();
+        }
+        fragmentChange(productListFragment, TAG_PRODUCT_LIST);
+    }
+
+    // Metodo para agregar el fragment de detalles
+
     public void goToDetailFragment(String id) {
         if (productDetailFragment == null) {
             productDetailFragment = new ProductDetailFragment();
-        } else if (!productDetailFragment.isVisible()) {
-            Bundle args = new Bundle();
-            args.putString("productId", id);
-            productDetailFragment.setArguments(args);
-            fragmentChange(productDetailFragment, TAG_PRODUCT_DETAIL);
-            toolbar.collapseActionView();
         }
+        Bundle args = new Bundle();
+        args.putString("productId", id);
+        productDetailFragment.setArguments(args);
+        fragmentChange(productDetailFragment, TAG_PRODUCT_DETAIL);
+        toolbar.collapseActionView();
     }
 }

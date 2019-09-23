@@ -83,6 +83,7 @@ public class ProductListFragment extends Fragment {
 
     private void setupRecyclerView() {
         initialText.setVisibility(View.VISIBLE);
+
         productListAdapter = new ProductListAdapter(getContext());
         recyclerView.setAdapter(productListAdapter);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -99,6 +100,9 @@ public class ProductListFragment extends Fragment {
     public void emptyListState() {
         initialText.setVisibility(View.VISIBLE);
     }
+
+
+    // Metodo para manejar la posicion de la lista cuando se busca un producto nuevo o cuando se agregan mas a la lista actual
 
     @SuppressLint("RestrictedApi")
     public void returnToTopPositionOnList(Integer offset) {

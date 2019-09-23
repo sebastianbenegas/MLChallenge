@@ -7,6 +7,8 @@ import static com.example.mlchallenge.data.Status.ERROR;
 import static com.example.mlchallenge.data.Status.LOADING;
 import static com.example.mlchallenge.data.Status.SUCCESS;
 
+// Clase para manejar la respuesta de la API
+
 public class Resource<T> {
     @NonNull
     public final Status status;

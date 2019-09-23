@@ -35,9 +35,9 @@ public class SearchViewModel extends ViewModel {
             return;
         }
         productsMediatorLiveData = productRepository.searchProducts(query, offset, limit);
-        productsMediatorLiveData.observeForever(new Observer<Resource<List<com.example.mlchallenge.data.models.Product>>>() {
+        productsMediatorLiveData.observeForever(new Observer<Resource<List<Product>>>() {
             @Override
-            public void onChanged(Resource<List<com.example.mlchallenge.data.models.Product>> resource) {
+            public void onChanged(Resource<List<Product>> resource) {
                 searchResult.postValue(resource);
                 if (resource.isSuccess() || resource.isLoaded()) {
                     productsMediatorLiveData.removeObserver(this);

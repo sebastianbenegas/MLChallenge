@@ -22,6 +22,8 @@ import dagger.android.support.HasSupportFragmentInjector;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector, ProductListAdapter.IOnClick {
 
+    private static final String TAG_PRODUCT_SEARCH = "productSearch";
+
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
     SearchFragment searchFragment;
@@ -38,7 +40,11 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         setContentView(R.layout.activity_main);
 
         searchFragment = new SearchFragment();
+        fragmentChange(searchFragment, TAG_PRODUCT_SEARCH);
 
+    }
+
+    private void fragmentChange(SearchFragment searchFragment, String tagProductSearch) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_container, searchFragment);
@@ -50,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         searchFragment.goToDetailFragment(id);
     }
 
+    // Metodo para manejar el backStack y pedir confirmacion mediante dialog para salir de la app
+
     @Override
     public void onBackPressed() {
         if (searchFragment != null && searchFragment.getChildFragmentManager().getBackStackEntryCount() > 1) {
@@ -57,18 +65,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         } else {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setMessage(R.string.confirm_exit);
-            dialog.setPositiveButton(getText(R.string.accept), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    MainActivity.super.onBackPressed();
-                }
-            });
-            dialog.setNegativeButton(getText(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            dialog.setPositiveButton(getText(R.string.accept), (dialog1, which) -> MainActivity.super.onBackPressed());
+            dialog.setNegativeButton(getText(R.string.cancel), (dialog12, which) -> dialog12.dismiss());
             dialog.show();
         }
     }
